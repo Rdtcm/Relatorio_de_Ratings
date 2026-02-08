@@ -256,6 +256,10 @@ A ferramenta proporciona:
 - ✔️ **Consistência** na formatação e apresentação
 - ✔️ **Distribuição fácil** via executável standalone
 
+
+## 🤓☝️ Imagens da Interface 
+<img width="769" height="559" alt="image" src="https://github.com/user-attachments/assets/93c783bc-66ca-4c71-999f-fd769e8d4b75" />
+
 ---
 
 **Versão:** 1.0.0  
