@@ -3,6 +3,9 @@ from typing import List
 from playwright.sync_api import sync_playwright, Page, TimeoutError
 import re
 import logging
+import shutil
+import sys
+import os
 
 
 logging.basicConfig(
@@ -31,7 +34,6 @@ class RatingRecord:
     action: str
     date: str
     link: str
-
 
 
 def clean_text(text: str) -> str:
@@ -139,7 +141,6 @@ def extract_agency(text: str) -> str:
     return "-"
 
 
-
 def parse_action_page(page: Page, url: str, date: str) -> RatingRecord:
     logging.info(f"Abrindo ação: {url}")
 
@@ -151,7 +152,6 @@ def parse_action_page(page: Page, url: str, date: str) -> RatingRecord:
     raw_text = page.locator(".frw-RAC").inner_text()
     text = clean_text(raw_text)
     agency = extract_agency(raw_text)
-
 
     company, rating_prev, rating_curr = \
         extract_entity_and_ratings_from_table(page)
@@ -182,7 +182,6 @@ def parse_action_page(page: Page, url: str, date: str) -> RatingRecord:
         date=date,
         link=url,
     )
-
 
 
 def extract_company(text: str) -> str:
@@ -378,6 +377,41 @@ def extract_action(text: str) -> str:
     return "Outro"
 
 
+def get_chromium_path():
+    candidates = []
+
+    if sys.platform.startswith("linux"):
+        candidates = [
+            "chromium",
+            "chromium-browser",
+            "google-chrome",
+            "google-chrome-stable",
+        ]
+
+    elif sys.platform.startswith("win"):
+        candidates = ["chrome", "msedge", "chromium"]
+
+        # caminhos comuns no Windows
+        win_paths = [
+            r"C:\Program Files\Google\Chrome\Application\chrome.exe",
+            r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+            r"C:\Program Files\Microsoft\Edge\Application\msedge.exe",
+            r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+        ]
+
+        for p in win_paths:
+            if os.path.exists(p):
+                return p
+
+    # tenta PATH
+    for name in candidates:
+        path = shutil.which(name)
+        if path:
+            return path
+
+    raise RuntimeError("Chromium/Chrome não encontrado no sistema.")
+
+
 # ----------------------------
 # EXECUÇÃO
 # ----------------------------
@@ -387,7 +421,12 @@ def run_scraper() -> List[RatingRecord]:
     seen_records = set()
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        # browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(
+            headless=True,
+            executable_path=get_chromium_path()
+        )
+
         page = browser.new_page()
 
         rows = extract_basic_rows(page)
