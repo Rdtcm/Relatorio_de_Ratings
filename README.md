@@ -259,5 +259,5 @@ A ferramenta proporciona:
 ---
 
 **Versão:** 1.0.0  
-**Última atualização:** Fevereiro 2024  
+**Última atualização:** Fevereiro 2026
 **Desenvolvedor:** Ryan Ledo
