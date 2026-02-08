@@ -180,7 +180,14 @@ pip install pyinstaller
 
 2. **Gerar executável:**
 ```bash
-pyinstaller --noconfirm --onefile --windowed client_interface.py
+pyinstaller --onefile --noconsole \
+  --name RatingReport \
+  --collect-all PyQt5 \
+  --collect-all PyQt5.QtWebEngineWidgets \
+  --collect-all PyQt5.QtWebEngineCore \
+  --collect-all playwright \
+  client_interface.py
+
 ```
 
 3. **O executável será criado em:**
