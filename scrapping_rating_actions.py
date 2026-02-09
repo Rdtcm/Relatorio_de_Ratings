@@ -124,19 +124,19 @@ def extract_agency(text: str) -> str:
 
     # Ordem por cobertura / prioridade
     if re.search(r"\bfitch\b", lower):
-        return "Fitch Ratings"
+        return "Fitch"
     if re.search(r"moody['’]s", lower):
         return "Moody's"
     if re.search(r"s&p|standard and poor", lower):
-        return "S&P Global Ratings"
+        return "S&P"
     if re.search(r"\bdbrs\b", lower):
-        return "DBRS Morningstar"
+        return "DBRS"
     if re.search(r"\bkbra\b", lower):
         return "KBRA"
     if re.search(r"a\.m\. best", lower):
         return "A.M. Best"
     if re.search(r"\bscope ratings\b", lower):
-        return "Scope Ratings"
+        return "Scope"
 
     return "-"
 
@@ -422,10 +422,19 @@ def run_scraper() -> List[RatingRecord]:
 
     with sync_playwright() as p:
         # browser = p.chromium.launch(headless=True)
-        browser = p.chromium.launch(
-            headless=True,
-            executable_path=get_chromium_path()
-        )
+        browser_path = get_chromium_path()
+
+        if browser_path:
+            browser = p.chromium.launch(
+                headless=True,
+                executable_path=browser_path,
+                args=["--disable-gpu"]
+            )
+        else:
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--disable-gpu"]
+            )
 
         page = browser.new_page()
 

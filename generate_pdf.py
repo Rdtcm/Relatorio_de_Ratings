@@ -62,6 +62,7 @@ class GeneratePDF:
             "rating_current": "Rating Atual",
             "outlook_previous": "Outlook Anterior",
             "outlook_current": "Outlook Atual",
+            "link": "Link",
             "action": "Ação de Rating",
         }, inplace=True)
 
@@ -80,9 +81,10 @@ class GeneratePDF:
         df = df[[
             "Data",
             "Emissor",
-            "Agência",  # acabei de adicionar, voce deve ajustar
+            "Agência",
             "Rating / Perspectiva Anterior",
             "Rating / Perspectiva Atual",
+            "Link",
             "Ação de Rating"
         ]]
 
@@ -176,7 +178,12 @@ class GeneratePDF:
                     str(row["Rating / Perspectiva Anterior"]), cell_center_style),
                 Paragraph(
                     str(row["Rating / Perspectiva Atual"]), cell_center_style),
+                Paragraph(
+                    f'<link href="{row["Link"]}">Clique para abrir</link>',
+                    cell_center_style
+                ),
                 Paragraph(str(row["Ação de Rating"]), cell_center_style),
+
             ])
 
         table_data = [header] + body
@@ -185,12 +192,13 @@ class GeneratePDF:
             table_data,
             repeatRows=1,
             colWidths=[
-                25 * mm,   # Data
-                85 * mm,   # Emissor
-                30 * mm,   # Agência
-                55 * mm,   # Rating anterior
-                55 * mm,   # Rating atual
-                30 * mm,   # Ação
+                25 * mm,
+                75 * mm,
+                25 * mm,
+                50 * mm,
+                50 * mm,
+                25 * mm,
+                25 * mm,
             ]
         )
 

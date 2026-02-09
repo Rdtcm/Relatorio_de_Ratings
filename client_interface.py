@@ -1,9 +1,20 @@
 import sys
 import os
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings, QWebEnginePage
 from PyQt5.QtCore import QThread, pyqtSignal, QUrl, QTimer
+from PyQt5.QtGui import QDesktopServices
 from main import main
+
+
+class ExternalLinkPage(QWebEnginePage):
+    def acceptNavigationRequest(self, url, nav_type, isMainFrame):
+        # Se não for arquivo local (PDF), abre externamente
+        if not url.isLocalFile():
+            QDesktopServices.openUrl(url)
+            return False
+
+        return super().acceptNavigationRequest(url, nav_type, isMainFrame)
 
 
 class Worker(QThread):
@@ -29,10 +40,18 @@ class PDFApp(QWidget):
         self.btn_generate.clicked.connect(self.generate_pdf)
         self.layout.addWidget(self.btn_generate, 0)
 
+        self.btn_back_pdf = QPushButton("Voltar ao PDF")
+        self.btn_back_pdf.clicked.connect(self.back_to_pdf)
+        self.btn_back_pdf.setEnabled(False)
+        self.layout.addWidget(self.btn_back_pdf, 0)
+
         self.label_status = QLabel("Pronto para gerar relatório.")
         self.layout.addWidget(self.label_status, 0)
 
+        # self.pdf_view = QWebEngineView()
         self.pdf_view = QWebEngineView()
+        self.pdf_view.setPage(ExternalLinkPage(self.pdf_view))
+
         self.pdf_view.settings().setAttribute(
             QWebEngineSettings.PluginsEnabled, True
         )
@@ -102,12 +121,23 @@ class PDFApp(QWidget):
             self.label_status.setText("Erro: PDF não encontrado.")
             return
 
+        # salva caminho atual
+        self.current_pdf_path = abs_path
+        self.btn_back_pdf.setEnabled(True)
+
         self.label_status.setText(f"PDF gerado: {abs_path}")
 
         url = QUrl.fromLocalFile(abs_path)
         self.pdf_view.setUrl(url)
 
         QTimer.singleShot(800, self.pdf_view.reload)
+
+    
+    def back_to_pdf(self):
+        if hasattr(self, "current_pdf_path"):
+            url = QUrl.fromLocalFile(self.current_pdf_path)
+            self.pdf_view.setUrl(url)
+
 
 
 if __name__ == "__main__":
