@@ -201,7 +201,7 @@ dist/client_interface      (Linux/macOS)
 Caso queira apenas utilizar a ferramenta sem instalar Python:
 
 ### 📥 Download do executável:
-[Clique aqui para baixar](https://drive.google.com/file/d/1s-w7zFISbk8VdMAke2T62gt0oaCz0-UE/view?usp=sharing)
+[Clique aqui para baixar](https://drive.google.com/file/d/1w10o30uyRBSYQnhxPdcCBzcR_syyN5sT/view?usp=sharing)
 
 **Instruções:**
 1. Baixe o arquivo executável
