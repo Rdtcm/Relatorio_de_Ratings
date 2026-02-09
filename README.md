@@ -265,7 +265,15 @@ A ferramenta proporciona:
 
 
 ## 🤓☝️ Imagens da Interface 
-<img width="769" height="559" alt="image" src="https://github.com/user-attachments/assets/93c783bc-66ca-4c71-999f-fd769e8d4b75" />
+<img width="1018" height="752" alt="image" src="https://github.com/user-attachments/assets/ad8b3e72-aa3a-4b71-a939-aa946ad66e12" />
+<img width="1011" height="745" alt="image" src="https://github.com/user-attachments/assets/ca807296-cb02-427e-a97d-90979c171248" />
+<img width="1011" height="745" alt="image" src="https://github.com/user-attachments/assets/6029a372-74a6-4538-8a45-08e105c64f65" />
+<img width="1011" height="745" alt="image" src="https://github.com/user-attachments/assets/93b49c06-27a1-4081-bb9d-606e5f1dab80" />
+
+
+
+
+
 
 ---
 
